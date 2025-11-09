@@ -1,0 +1,12 @@
+/* TEAM */
+Developer: Zigmoon
+Site: https://zigmoon.com
+Project: MYRAGE – Liens et messages éphémères sécurisés
+Language: French / English
+Framework: Vanilla JS, Web Crypto API
+/* THANKS */
+Fonts: Google Fonts (Space Mono)
+/* CONTACT */
+Email: contact@zigmoon.com
+/* LAST-UPDATE */
+2025-11-09

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="MYRAGE permet de créer des liens et messages éphémères 100% chiffrés côté client, protégés par mot de passe et auto‑destructeurs. Partagez en toute confidentialité.">
+    <meta name="theme-color" content="#000000">
+    <link id="canonicalLink" rel="canonical" href="">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="MYRAGE">
+    <meta property="og:title" content="MYRAGE – Liens et messages éphémères sécurisés">
+    <meta property="og:description" content="Créez des liens auto‑destructeurs chiffrés AES‑256‑GCM, protégés par mot de passe. Aucune donnée serveur, zéro log.">
+    <meta property="og:url" content="" id="ogUrl">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="MYRAGE – Liens et messages éphémères sécurisés">
+    <meta name="twitter:description" content="Partage confidentiel, 100% côté client, auto‑destruction.">
+    <title>MYRAGE – Liens et messages éphémères sécurisés</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/myrage.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="img/og-image.svg">
+    <meta property="og:image" content="img/og-image.svg">
+    <meta property="og:image:alt" content="MYRAGE – Liens et messages éphémères 100% chiffrés côté client, auto‑destructeurs.">
+    <meta property="og:image:type" content="image/svg+xml">
+    <meta property="og:locale" content="fr_FR">
+    <meta name="twitter:image" content="img/og-image.svg">
+    <meta name="author" content="zigmoon.com">
+    <meta name="keywords" content="liens éphémères, message éphémère, lien sécurisé, chiffrement AES-256-GCM, zero-knowledge, mot de passe, confidentialité, partage sécurisé">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">◐</button>
+    
+    <div class="container">
+        <!-- Section de création -->
+        <div id="create-section" class="card">
+            <h1>MYRAGE</h1>
+            <p class="subtitle">
+              Liens ou messages éphémères sécurisés
+               
+            </p>
+            
+            <div class="input-group">
+                <label>Titre optionnel</label>
+                <input type="text" id="title" placeholder="Titre pour le partage">
+            </div>
+            
+            <div class="input-group">
+                <label>URLs ou messages à protéger</label>
+                <div id="content-fields">
+                    <div class="field-group">
+                        <span class="field-number">01</span>
+                        <div class="field-input-wrapper">
+                            <input type="text" class="content-input" placeholder="URL ou message secret">
+                        </div>
+                        <button class="add-button" onclick="addContentField()">+</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label>Mot de passe</label>
+                <div class="password-group">
+                    <input type="password" id="password" placeholder="Requis pour l'accès">
+                    <button class="gen-button" onclick="generatePassword()">Générer</button>
+                </div>
+            </div>
+            
+            <div class="options-row">
+                <div class="input-group">
+                    <label>Expiration</label>
+                    <select id="expiration">
+                        <option value="1view">1 vue (détruit après ouverture)</option>
+                        <option value="10min">10 minutes (expire après création)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="generateLink()">Créer le lien sécurisé</button>
+            
+            <div id="share-link" class="result">
+                <div class="result-header">✓ Lien sécurisé créé</div>
+                <div id="resultContent"></div>
+            </div>
+        </div>
+        
+        <!-- Section de vue -->
+        <div id="view-section" class="card hidden">
+            <div id="passwordPrompt" class="password-prompt">
+                <h2>Accès Protégé</h2>
+                <p class="subtitle">Mot de passe requis</p>
+                <div class="input-group">
+                    <input type="password" id="view-password" placeholder="Entrez le mot de passe">
+                </div>
+                <button class="btn" onclick="decryptAndShow()">Déverrouiller</button>
+                <div id="error-message"></div>
+            </div>
+            
+            <div id="contentDisplay" style="display: none;">
+                <h2>Contenu Déverrouillé</h2>
+                <div id="message-display" class="message-display"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#" onclick="showAbout(); return false;">À propos</a>
+            <a href="#" onclick="showSecurity(); return false;">Sécurité</a>
+        </div>
+        <div class="footer-right">
+            ©2025 zigmoon.com
+        </div>
+    </footer>
+
+        <!-- Structured Data -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "MYRAGE",
+            "url": "",
+            "applicationCategory": "SecurityApplication",
+            "operatingSystem": "Web",
+            "description": "Création de liens et messages éphémères chiffrés côté client, protégés par mot de passe et auto‑destructeurs.",
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}
+        }
+        </script>
+
+    <div id="aboutModal" class="about-modal">
+        <button class="close-about" onclick="closeModal()">×</button>
+        <div class="about-content">
+            <h2>À propos de MYRAGE</h2>
+            <p><strong>La plateforme de liens éphémères la plus sécurisée au monde.</strong></p>
+            
+            <h3>Ce que nous faisons</h3>
+            <p>MYRAGE crée des liens auto-destructeurs protégés par mot de passe qui disparaissent sans laisser de trace. Partagez des informations sensibles avec un chiffrement de niveau militaire, sachant qu'elles disparaîtront définitivement après vos conditions spécifiées.</p>
+            
+            <h3>Pourquoi nous sommes différents</h3>
+            <p>MYRAGE URL représente le summum de la technologie de confidentialité. Alors que d'autres promettent la sécurité, nous offrons une certitude mathématique. Notre architecture zero-knowledge signifie que même nous ne pouvons pas accéder à vos données.</p>
+            
+            <h3>Cas d'usage</h3>
+            <p>• Partage de documents confidentiels<br>
+            • Transmission sécurisée de mots de passe<br>
+            • Informations sensibles au temps<br>
+            • Livraison de messages privés<br>
+            • Lanceurs d'alerte anonymes</p>
+            
+            <h3>Notre garantie</h3>
+            <p>Chaque lien créé avec MYRAGE URL est protégé par le chiffrement AES-256-GCM, le traitement côté client et la destruction automatique. Pas de serveurs. Pas de logs. Pas de traces. Juste une sécurité éphémère pure.</p>
+            
+            <div style="margin-top: 30px;">
+                <span class="security-badge">Zero-Knowledge</span>
+                <span class="security-badge">Client-Side Only</span>
+                <span class="security-badge">Open Source</span>
+                <span class="security-badge">No Tracking</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="securityModal" class="about-modal">
+        <button class="close-about" onclick="closeModal()">×</button>
+        <div class="about-content">
+            <h2>Architecture de Sécurité</h2>
+            
+            <h3>Chiffrement 100% côté client</h3>
+            <p>Tout le chiffrement se fait dans votre navigateur. Vos données ne touchent jamais un serveur sous forme lisible. Nous utilisons AES-256-GCM avec votre mot de passe comme clé, garantissant que sans votre mot de passe, les données sont mathématiquement irrécupérables.</p>
+            
+            <h3>Liens auto-destructeurs</h3>
+            <p>Les liens se détruisent automatiquement selon :<br>
+            • Limite de vues (1 vue)<br>
+            • Expiration temporelle (10 minutes)<br>
+            • Le premier déclenche la suppression permanente</p>
+            
+            <h3>Protocole Zero-Knowledge</h3>
+            <p>Même si quelqu'un intercepte le lien chiffré, il ne peut pas le déchiffrer sans le mot de passe. Le mot de passe n'est jamais stocké. Cela signifie que même GOST URL ne peut pas lire votre contenu.</p>
+            
+            <h3>Fonctionnalités de confidentialité</h3>
+            <p>• Pas de journalisation serveur<br>
+            • Pas d'analyse ou de suivi<br>
+            • Pas de cookies<br>
+            • Aucun compte utilisateur requis<br>
+            • Utilisation complètement anonyme</p>
+            
+            <h3>Engagement Open Source</h3>
+            <p>Notre code entier est transparent et vérifiable. Vous pouvez vérifier nos affirmations de sécurité vous-même. Nous croyons que la sécurité par l'obscurité n'est pas une sécurité du tout.</p>
+        </div>
+    </div>
+
+    <script src="js/myrage.js" defer></script>
+    <script>
+        // SEO: set canonical and og:url dynamically without hash or query
+        (function(){
+            try {
+                var cleanUrl = window.location.origin + window.location.pathname;
+                var can = document.getElementById('canonicalLink');
+                if (can) can.setAttribute('href', cleanUrl);
+                var og = document.getElementById('ogUrl');
+                if (og) og.setAttribute('content', cleanUrl);
+            } catch(e) {}
+        })();
+
+        let fieldCount = 1;
+
+        // Fonctions pour thème jour/nuit
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Charger le thème sauvegardé
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+        });
+
+        // Effet background avec souris
+        document.addEventListener('mousemove', (e) => {
+            document.body.style.setProperty('--mouse-x', `${e.clientX}px`);
+            document.body.style.setProperty('--mouse-y', `${e.clientY}px`);
+        });
+
+        // Ajouter un champ URL/message supplémentaire
+        function addContentField() {
+            fieldCount++;
+            const fields = document.getElementById('content-fields');
+            const newField = document.createElement('div');
+            newField.className = 'field-group';
+            newField.innerHTML = `
+                <span class="field-number">${String(fieldCount).padStart(2, '0')}</span>
+                <div class="field-input-wrapper">
+                    <input type="text" class="content-input" placeholder="URL ou message secret">
+                </div>
+                <button class="remove-button" onclick="removeField(this)">×</button>
+            `;
+            fields.appendChild(newField);
+        }
+
+        // Supprimer un champ
+        function removeField(button) {
+            button.parentElement.remove();
+            updateFieldNumbers();
+        }
+
+        // Mettre à jour les numéros
+        function updateFieldNumbers() {
+            const groups = document.querySelectorAll('.field-group');
+            fieldCount = groups.length;
+            groups.forEach((group, index) => {
+                group.querySelector('.field-number').textContent = String(index + 1).padStart(2, '0');
+            });
+        }
+
+        // Générer un mot de passe base64 aléatoire
+        function generatePassword() {
+            const array = new Uint8Array(16);
+            crypto.getRandomValues(array);
+            const base64 = btoa(String.fromCharCode(...array));
+            document.getElementById('password').value = base64;
+            navigator.clipboard.writeText(base64).then(() => {
+                const btn = document.querySelector('.gen-button');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copié ✓';
+                setTimeout(() => btn.textContent = originalText, 2000);
+            }).catch(err => {
+                alert('Erreur lors de la copie : ' + err);
+            });
+        }
+
+        // Fonctions utilitaires pour Web Crypto API
+        async function deriveKey(password, salt) {
+            const encoder = new TextEncoder();
+            const keyMaterial = await crypto.subtle.importKey(
+                "raw",
+                encoder.encode(password),
+                "PBKDF2",
+                false,
+                ["deriveBits", "deriveKey"]
+            );
+            return crypto.subtle.deriveKey(
+                {
+                    "name": "PBKDF2",
+                    salt: salt,
+                    "iterations": 100000,
+                    "hash": "SHA-256"
+                },
+                keyMaterial,
+                { "name": "AES-GCM", "length": 256 },
+                true,
+                ["encrypt", "decrypt"]
+            );
+        }
+
+        async function encrypt(text, password) {
+            const encoder = new TextEncoder();
+            const salt = crypto.getRandomValues(new Uint8Array(16));
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const key = await deriveKey(password, salt);
+            const encrypted = await crypto.subtle.encrypt(
+                {
+                    name: "AES-GCM",
+                    iv: iv
+                },
+                key,
+                encoder.encode(text)
+            );
+            const encryptedArray = new Uint8Array(encrypted);
+            const combined = new Uint8Array(salt.length + iv.length + encryptedArray.length);
+            combined.set(salt, 0);
+            combined.set(iv, salt.length);
+            combined.set(encryptedArray, salt.length + iv.length);
+            return btoa(String.fromCharCode(...combined));
+        }
+
+        async function decrypt(encryptedBase64, password) {
+            const decoder = new TextDecoder();
+            const combined = Uint8Array.from(atob(encryptedBase64), c => c.charCodeAt(0));
+            const salt = combined.slice(0, 16);
+            const iv = combined.slice(16, 28);
+            const encrypted = combined.slice(28);
+            const key = await deriveKey(password, salt);
+            const decrypted = await crypto.subtle.decrypt(
+                {
+                    name: "AES-GCM",
+                    iv: iv
+                },
+                key,
+                encrypted
+            );
+            return decoder.decode(decrypted);
+        }
+
+        // Logique de l'application
+        const hash = window.location.hash.substring(1);
+        const createSection = document.getElementById('create-section');
+        const viewSection = document.getElementById('view-section');
+        const messageDisplay = document.getElementById('message-display');
+        const errorMessage = document.getElementById('error-message');
+        const shareLink = document.getElementById('share-link');
+
+        if (hash) {
+            createSection.classList.add('hidden');
+            viewSection.classList.remove('hidden');
+        }
+
+        async function generateLink() {
+            const title = document.getElementById('title').value;
+            const inputs = document.querySelectorAll('.content-input');
+            let content = '';
+            inputs.forEach(input => {
+                if (input.value.trim()) {
+                    content += input.value.trim() + '\n';
+                }
+            });
+            content = content.trim();
+            const password = document.getElementById('password').value;
+            const expiration = document.getElementById('expiration').value;
+
+            if (!content || !password) {
+                alert('Veuillez remplir au moins un contenu et le mot de passe.');
+                return;
+            }
+
+            const data = {
+                title: title,
+                content: content,
+                expiration: expiration,
+                timestamp: Date.now()
+            };
+
+            const jsonData = JSON.stringify(data);
+            const encrypted = await encrypt(jsonData, password);
+            const link = window.location.href.split('#')[0] + '#' + encrypted;
+            
+            const resultHTML = `
+                <div class="result-url">${link}</div>
+                <button class="copy-btn" onclick="copyLink('${link}', this)">Copier le lien</button>
+            `;
+            
+            document.getElementById('resultContent').innerHTML = resultHTML;
+            shareLink.classList.add('show');
+        }
+
+        function copyLink(link, button) {
+            navigator.clipboard.writeText(link).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copié ✓';
+                setTimeout(() => button.textContent = originalText, 2000);
+            }).catch(err => {
+                alert('Erreur lors de la copie : ' + err);
+            });
+        }
+
+        // Rendre la sélection du lien facile au clic
+        document.addEventListener('click', function(e){
+            var el = e.target;
+            if (el && el.classList && el.classList.contains('result-url')) {
+                try {
+                    var range = document.createRange();
+                    range.selectNodeContents(el);
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                } catch(e) {}
+            }
+        });
+
+        function copyUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URL copiée dans le presse-papiers !');
+            }).catch(err => {
+                alert('Erreur lors de la copie : ' + err);
+            });
+        }
+
+        function openUrl(url) {
+            window.open(url, '_blank');
+        }
+
+        async function decryptAndShow() {
+            const password = document.getElementById('view-password').value;
+            errorMessage.textContent = '';
+
+            try {
+                const decryptedJson = await decrypt(hash, password);
+                const data = JSON.parse(decryptedJson);
+
+                // Vérification expiration
+                if (data.expiration === '10min') {
+                    const elapsed = Date.now() - data.timestamp;
+                    if (elapsed > 10 * 60 * 1000) {
+                        throw new Error('Ce lien a expiré.');
+                    }
+                }
+
+                // Affichage du titre et du contenu
+                let html = '';
+                if (data.title) {
+                    html += `<h3 style="margin-bottom: 20px; opacity: 0.8;">${data.title}</h3>`;
+                }
+                
+                const lines = data.content.split('\n');
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (line) {
+                        if (line.includes('http')) {
+                            // Pour les URLs : afficher avec boutons Copier et Ouvrir
+                            html += `<div class="url-item">
+                                <span>${line}</span>
+                                <div class="url-item-buttons">
+                                    <button onclick="copyUrl('${line}')">Copier</button>
+                                    <button onclick="openUrl('${line}')">Ouvrir</button>
+                                </div>
+                            </div>`;
+                        } else {
+                            html += `<div style="padding: 10px; border: 1px solid var(--border); margin-bottom: 10px;">${line}</div>`;
+                        }
+                    }
+                });
+                
+                document.getElementById('passwordPrompt').style.display = 'none';
+                document.getElementById('contentDisplay').style.display = 'block';
+                messageDisplay.innerHTML = html;
+
+                // Pour 1 vue : détruire le hash après affichage
+                if (data.expiration === '1view') {
+                    history.replaceState(null, '', window.location.pathname);
+                }
+
+            } catch (error) {
+                errorMessage.innerHTML = '<div class="error">Mot de passe incorrect ou lien expiré</div>';
+            }
+        }
+
+        // Fonctions pour les modales
+        function showAbout() {
+            document.getElementById('aboutModal').classList.add('active');
+        }
+
+        function showSecurity() {
+            document.getElementById('securityModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.about-modal').forEach(modal => {
+                modal.classList.remove('active');
+            });
+        }
+
+        // Fermer modal avec Escape (duplicated safety if external script not loaded yet)
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal && closeModal(); } });
+    </script>
+</body>
+</html>
